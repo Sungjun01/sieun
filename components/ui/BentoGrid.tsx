@@ -1,12 +1,17 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-import Lottie from "react-lottie";
+import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 
 import { BackgroundGradientAnimation } from "./GradientBg";
 import GridGlobe from "./GridGlobe";
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
+
+// Dynamically import Lottie with SSR disabled
+const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 export const BentoGrid = ({
   className,
@@ -51,6 +56,12 @@ export const BentoGridItem = ({
   const rightLists = ["C/C++", "MongoDB", "JavaScript"];
 
   const [copied, setCopied] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Set isMounted to true after component mounts
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const defaultOptions = {
     loop: copied,
@@ -62,9 +73,11 @@ export const BentoGridItem = ({
   };
 
   const handleCopy = () => {
-    const text = "skimrobin0@gmail.com"; // Your email from CV
-    navigator.clipboard.writeText(text);
-    setCopied(true);
+    if (typeof navigator !== "undefined") {
+      const text = "skimrobin0@gmail.com"; // Your email from CV
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+    }
   };
 
   return (
@@ -156,7 +169,7 @@ export const BentoGridItem = ({
             </div>
           )}
 
-          {id === 6 && (
+          {id === 6 && isMounted && (
             <div className="mt-5 relative">
               <div
                 className={`absolute -bottom-5 right-0 ${
