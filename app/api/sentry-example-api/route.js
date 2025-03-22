@@ -1,5 +1,3 @@
-import { withSentryConfig } from "@sentry/nextjs";
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Static export to avoid SSR issues
@@ -14,29 +12,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+
   eslint: {
     ignoreDuringBuilds: true,
   },
 };
 
-// Only use Sentry in production to avoid development build issues
-const isSentryEnabled = process.env.NODE_ENV === "production";
-
-// Export the config with or without Sentry based on environment
-export default isSentryEnabled
-  ? withSentryConfig(
-      nextConfig,
-      {
-        silent: true,
-        org: "javascript-mastery",
-        project: "javascript-nextjs",
-      },
-      {
-        widenClientFileUpload: true,
-        transpileClientSDK: true,
-        hideSourceMaps: true,
-        disableLogger: true,
-        automaticVercelMonitors: true,
-      }
-    )
-  : nextConfig;
+export default nextConfig;
