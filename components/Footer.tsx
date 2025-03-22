@@ -17,13 +17,13 @@ const Footer = () => {
 
       <div className="flex flex-col items-center">
         <h1 className="heading lg:max-w-[45vw]">
-          Let's create <span className="text-purple">innovative</span> solutions
-          together
+          Let&apos;s create <span className="text-purple">innovative</span>{" "}
+          solutions together
         </h1>
         <p className="text-white-200 md:mt-10 my-5 text-center">
-          I'm always open to collaborate on innovative projects and research
-          opportunities. Whether it's IoT, web development, or electronic
-          engineering, let's connect!
+          I&apos;m always open to collaborate on innovative projects and
+          research opportunities. Whether it&apos;s IoT, web development, or
+          electronic engineering, let&apos;s connect!
         </p>
         <a href="mailto:skimrobin0@gmail.com">
           <MagicButton
