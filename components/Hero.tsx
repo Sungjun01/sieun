@@ -1,6 +1,8 @@
+"use client";
+
 import { FaLocationArrow } from "react-icons/fa6";
 import { FaFileDownload } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import MagicButton from "./MagicButton";
 import { Spotlight } from "./ui/Spotlight";
@@ -8,6 +10,7 @@ import { TextGenerateEffect } from "./ui/TextGenerateEffect";
 
 const Hero = () => {
   const [showPdf, setShowPdf] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   // The exact filename of your CV PDF
   const cvFileName = "SIEUN KIM CV.pdf";
@@ -15,7 +18,13 @@ const Hero = () => {
   // Encode the filename for URLs to handle spaces properly
   const encodedCvFileName = encodeURIComponent(cvFileName);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const handleDownloadCV = () => {
+    if (typeof window === "undefined") return;
+
     // Option 1: Direct download
     const cvUrl = `/${encodedCvFileName}`;
     const link = document.createElement("a");
@@ -79,19 +88,21 @@ const Hero = () => {
                 position="right"
               />
             </a>
-            <button onClick={handleDownloadCV}>
-              <MagicButton
-                title="Download My CV"
-                icon={<FaFileDownload />}
-                position="right"
-              />
-            </button>
+            {isMounted && (
+              <button onClick={handleDownloadCV}>
+                <MagicButton
+                  title="Download My CV"
+                  icon={<FaFileDownload />}
+                  position="right"
+                />
+              </button>
+            )}
           </div>
         </div>
       </div>
 
       {/* CV Viewer Modal */}
-      {showPdf && (
+      {showPdf && isMounted && (
         <div className="fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center p-4">
           <div className="relative bg-white dark:bg-gray-800 rounded-lg w-full max-w-4xl h-5/6">
             <div className="absolute top-0 left-0 right-0 bg-gray-100 dark:bg-gray-700 rounded-t-lg flex justify-between items-center px-4 py-2">
